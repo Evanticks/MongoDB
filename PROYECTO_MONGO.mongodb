@@ -1,0 +1,44 @@
+db.DarkSoulsWeapons.insertOne({ "_id" : 1, "name":"Gárgola", atk:{"physical": 30}})
+
+db.DarkSoulsWeapons.insertMany([
+{ "_id" : 2, "name":"Gárgola", def:{"magic": 30}},
+{ "_id" : 3, "name":"Gárgola", "weight" : 15}
+])
+
+
+DELETE
+db.DarkSoulsWeapons.deleteOne({"name": "Gárgola"})
+
+db.DarkSoulsWeapons.deleteMany({"name": "Gárgola"})
+
+UPDATE
+db.DarkSoulsWeapons.updateOne({"name" : "Flamberge"},{$set:{"unbreakable":"yes"}})
+
+UPDATE EMBEBIDOS
+db.DarkSoulsWeapons.updateMany( { "req.dexterity" : 16},{$set:{"atk.lenght" : 20}})
+
+db.DarkSoulsWeapons.updateMany( { "req.dexterity" : 16},{"atk.longitud" : 10})
+
+REPLACE ONE
+db.DarkSoulsWeapons.replaceMany( { "req.dexterity" : 16},{"atk.longitud" : 10} )
+
+CONSULTAS SIMPLES
+db.DarkSoulsWeapons.find({"name" : "Flamberge"}).pretty()
+
+db.DarkSoulsWeapons.find({"weight" : 24}).pretty()
+
+db.DarkSoulsWeapons.find({"attackTypes" : ["Slash"]}).pretty()
+
+
+CONSULTAS CON OPERADORES Y EMBEBIDOS
+db.DarkSoulsWeapons.find({"atk.physical" : {$gt:70}}).sort({"atk.physical":1}).pretty()
+
+db.DarkSoulsWeapons.find({ "$and":  [ { "atk.physical" : 110 },
+                                    { "def.physical": 60 }
+                                  ] }).count()
+
+db.DarkSoulsWeapons.find().sort({"nombre":1})
+
+db.DarkSoulsWeapons.find({},{name:1,_id:0}).sort({"name":-1}).pretty()
+
+db.DarkSoulsWeapons.aggregate([{$group: { _id: "$atk.physical", total: { $sum:1 } } }])
